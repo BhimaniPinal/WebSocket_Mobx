@@ -33,6 +33,16 @@ export class DashBoardViewModel {
     return result;
   }
 
+  @computed
+  get isValidJSONString(): boolean {
+    try {
+      JSON.parse(this.eventPayload);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
   @action.bound
   handleClear = () => {
     this.webSocketOutput = "";
@@ -65,7 +75,7 @@ export class DashBoardViewModel {
 
   @action.bound
   handleSend = async () => {
-    if (this.websocket && this.eventPayload) {
+    if (this.websocket && this.eventPayload && this.isValidJSONString) {
       await this.websocket.send(this.eventPayload);
       this.setWebSocketOutput("Send: " + this.eventPayload);
       this.websocket.onmessage = (response: any) => {

@@ -20,7 +20,8 @@ const DashBoard: React.FunctionComponent<{ vm: DashBoardViewModel }> = observer(
         handleShowOutput,
         setWssUrl,
         setEventPayload,
-        isValidAddress
+        isValidAddress,
+        isValidJSONString
     } = vm;
 
     return (
@@ -55,6 +56,11 @@ const DashBoard: React.FunctionComponent<{ vm: DashBoardViewModel }> = observer(
                             variant="outlined"
                             value={eventPayload}
                             onChange={setEventPayload} />
+                        {
+                            eventPayload && !isValidJSONString && (
+                                <span className="error-message">Please enter valid json string</span>
+                            )
+                        }
                     </Grid>
                     <Grid item xs={3}>
                         <Button variant="contained" color="default" onClick={handleSend}>
